@@ -1,7 +1,7 @@
 # esp32-eyes
-Emotive animated eyes on an OLED display, as inspired by Anki Cozmo etc.
+Emotive animated eyes on an ST7789 TFT display, as inspired by Anki Cozmo etc.
 
-Inspired by the expressive eye animations of the Anki "Cozmo" robot, this Arduino/ESP8266/ESP32 library displays a set of animated eyes on a small 128x64 OLED screen.
+Inspired by the expressive eye animations of the Anki "Cozmo" robot, this Arduino/ESP8266/ESP32 library displays a set of animated eyes on an ST7789-based TFT screen.
 
 <img src="https://github.com/playfultechnology/esp32-eyes/blob/main/doc/anki-cozmo-faces-3-1024x576.jpg" />
 
@@ -10,15 +10,31 @@ Unlike some libraries which display a set of pre-rendered bitmap images for each
 
 Heavily based on <a href="https://github.com/luisllamasbinaburo/ESP32_Faces/">this library</a>, although with significant adjustments:
 
- - OLED (using <a href="https://github.com/olikraus/u8g2">u8g2</a>) rather than TFT (based on <a href="https://github.com/Bodmer/TFT_eSPI">eSPI_TFT</a>)
+ - ST7789 TFT support using <a href="https://github.com/adafruit/Adafruit-GFX-Library">Adafruit_GFX</a> and <a href="https://github.com/adafruit/Adafruit-ST7735-Library">Adafruit_ST7789</a>
  - Horizontal rather than vertical alignment
  - Mirrored left/right eye animations
  - Automatic or manual blink and look direction
 
 ## Hardware Used
- - ESP32 with built-in OLED - https://www.aliexpress.com/item/4000065217965.html (though you can use pretty much any Arduino/ESP8266/ESP8266 and attach a generic I2C OLED)
+ - ESP32 development board
+ - ST7789 TFT display (configured for a 240x320 layout in code)
  - 3x linear potentiometers - https://www.aliexpress.com/item/1005005859787527.html
  - Joystick module - https://www.aliexpress.com/item/32901984938.html
+
+## Display Setup
+
+This project now uses `Adafruit_GFX` with `Adafruit_ST7789`.
+
+The default sketch assumes:
+
+ - `DISPLAY_WIDTH = 240`
+ - `DISPLAY_HEIGHT = 320`
+ - `DISPLAY_ROTATION = 0`
+ - `TFT_CS_PIN = 5`
+ - `TFT_DC_PIN = 2`
+ - `TFT_RST_PIN = 4`
+
+These values can be changed in `Common.h` if your panel uses different wiring, a different ST7789 layout such as 240x320, or a different rotation.
 
 <img src="https://github.com/playfultechnology/esp32-eyes/blob/main/doc/Schematic_ESP32-OLED-Eyes.png" />
 

@@ -5,10 +5,9 @@
  ****************************************************/
 
 // INCLUDES
-// Built-in Arduino I2C library
-#include <Wire.h>
 // Defines all face functionality
 #include "Face.h"
+#include "Common.h"
 
 // CONSTANTS
 const byte joystickPins[] = {25, 26};
@@ -28,7 +27,8 @@ void setup(void) {
   pinMode(blinkPin, INPUT_PULLUP);
 
   // Create a new face
-  face = new Face(/* screenWidth = */ 128, /* screenHeight = */ 64, /* eyeSize = */ 40);
+  face = new Face(/* screenWidth = */ DISPLAY_WIDTH, /* screenHeight = */ DISPLAY_HEIGHT, /* eyeSize = */ 84);
+  face->EyeInterDistance = 14;
   // Assign the current expression
   face->Expression.GoTo_Normal();
 

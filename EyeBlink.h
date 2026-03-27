@@ -28,7 +28,7 @@ public:
 
 	TrapeziumAnimation Animation;
 
-	int32_t BlinkWidth = 60;
+	int32_t BlinkWidth = 90;
 	int32_t BlinkHeight = 2;
 
 	void Update();

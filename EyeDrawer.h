@@ -24,6 +24,10 @@ enum CornerType {T_R, T_L, B_L, B_R};
  */
 class EyeDrawer {
   public:
+    static uint16_t ResolveColor(int32_t color) {
+      return color ? COLOR_EYE : COLOR_BACKGROUND;
+    }
+
     static void Draw(int16_t centerX, int16_t centerY, EyeConfig *config) {
       // Amount by which corners will be shifted up/down based on requested "slope"
       int32_t delta_y_top = config->Height * config->Slope_Top / 2.0;
@@ -107,7 +111,7 @@ class EyeDrawer {
 
       if (corner == T_R) {
         for(x = 0, y = ry, s = 2 * ry2 + rx2 * (1 - 2 * ry); ry2 * x <= rx2 * y; x++) {
-          u8g2.drawHLine(x0, y0 - y, x);
+          tft.drawFastHLine(x0, y0 - y, x, ResolveColor(color));
           if(s >= 0) {
             s += fx2 * (1 - y);
             y--;
@@ -115,7 +119,7 @@ class EyeDrawer {
           s += ry2 * ((4 * x) + 6);
         }         
         for(x = rx, y = 0, s = 2 * rx2 + ry2 * (1 - 2 * rx); rx2 * y <= ry2 * x; y++) {
-          u8g2.drawHLine(x0, y0 - y, x);
+          tft.drawFastHLine(x0, y0 - y, x, ResolveColor(color));
           if (s >= 0) {
             s += fy2 * (1 - x);
             x--;
@@ -126,7 +130,7 @@ class EyeDrawer {
 
       else if (corner == B_R) {
         for (x = 0, y = ry, s = 2 * ry2 + rx2 * (1 - 2 * ry); ry2 * x <= rx2 * y; x++) {
-          u8g2.drawHLine(x0, y0 + y -1, x);
+          tft.drawFastHLine(x0, y0 + y -1, x, ResolveColor(color));
           if (s >= 0) {
             s += fx2 * (1 - y);
             y--;
@@ -134,7 +138,7 @@ class EyeDrawer {
           s += ry2 * ((4 * x) + 6);
         }
         for (x = rx, y = 0, s = 2 * rx2 + ry2 * (1 - 2 * rx); rx2 * y <= ry2 * x; y++) {
-          u8g2.drawHLine(x0, y0 + y -1, x);
+          tft.drawFastHLine(x0, y0 + y -1, x, ResolveColor(color));
           if (s >= 0) {
             s += fy2 * (1 - x);
             x--;
@@ -145,7 +149,7 @@ class EyeDrawer {
 
       else if (corner == T_L) {
         for (x = 0, y = ry, s = 2 * ry2 + rx2 * (1 - 2 * ry); ry2 * x <= rx2 * y; x++) {
-          u8g2.drawHLine(x0-x, y0 - y, x);
+          tft.drawFastHLine(x0-x, y0 - y, x, ResolveColor(color));
           if (s >= 0) {
             s += fx2 * (1 - y);
             y--;
@@ -153,7 +157,7 @@ class EyeDrawer {
           s += ry2 * ((4 * x) + 6);
         }
         for (x = rx, y = 0, s = 2 * rx2 + ry2 * (1 - 2 * rx); rx2 * y <= ry2 * x; y++) {
-          u8g2.drawHLine(x0-x, y0 - y, x);
+          tft.drawFastHLine(x0-x, y0 - y, x, ResolveColor(color));
           if (s >= 0) {
             s += fy2 * (1 - x);
             x--;
@@ -164,7 +168,7 @@ class EyeDrawer {
 
       else if (corner == B_L) {
         for (x = 0, y = ry, s = 2 * ry2 + rx2 * (1 - 2 * ry); ry2 * x <= rx2 * y; x++) {
-          u8g2.drawHLine(x0-x, y0 + y - 1, x);
+          tft.drawFastHLine(x0-x, y0 + y - 1, x, ResolveColor(color));
           if (s >= 0) {
             s += fx2 * (1 - y);
             y--;
@@ -172,7 +176,7 @@ class EyeDrawer {
           s += ry2 * ((4 * x) + 6);
         }
         for (x = rx, y = 0, s = 2 * rx2 + ry2 * (1 - 2 * rx); rx2 * y <= ry2 * x; y++) {
-          u8g2.drawHLine(x0-x, y0 + y , x);
+          tft.drawFastHLine(x0-x, y0 + y , x, ResolveColor(color));
           if (s >= 0) {
             s += fy2 * (1 - x);
             x--;
@@ -191,21 +195,15 @@ class EyeDrawer {
       int32_t b = max(y0, y1);
       int32_t w = r-l;
       int32_t h = b-t; 
-      u8g2.setDrawColor(color);
-      u8g2.drawBox(l, t, w, h);
-      u8g2.setDrawColor(1);
+      tft.fillRect(l, t, w, h, ResolveColor(color));
     }
 
     static void FillRectangularTriangle(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t color) {
-      u8g2.setDrawColor(color);
-      u8g2.drawTriangle(x0, y0, x1, y1, x1, y0);
-      u8g2.setDrawColor(1);
+      tft.fillTriangle(x0, y0, x1, y1, x1, y0, ResolveColor(color));
     }
 
     static void FillTriangle(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t color) {
-        u8g2.setDrawColor(color);
-        u8g2.drawTriangle(x0, y0, x1, y1, x2, y2);
-        u8g2.setDrawColor(1);
+        tft.fillTriangle(x0, y0, x1, y1, x2, y2, ResolveColor(color));
     }
 };
 
